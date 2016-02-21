@@ -49,7 +49,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-TBD
+![walk trhoug](https://github.com/zhuqicn/cpwk3-tweet/blob/master/Tweet.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -59,12 +59,14 @@ Describe any challenges encountered while building the app.
 
 ## Open-source libraries used
 
-- [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
-- [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
+ - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
+ - Glide
+ - Butterknife
+
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2016] [Qi Zhu]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
