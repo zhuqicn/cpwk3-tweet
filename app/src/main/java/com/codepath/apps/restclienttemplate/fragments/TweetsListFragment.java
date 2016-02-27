@@ -94,7 +94,7 @@ abstract public class TweetsListFragment extends Fragment {
   }
 
   private void getProfileUrl() {
-    client.getProfilePic(new JsonHttpResponseHandler() {
+    client.getProfile(new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         try {

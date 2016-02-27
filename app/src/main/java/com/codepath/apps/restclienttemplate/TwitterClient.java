@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -71,10 +72,38 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiUrl, params, handler);
 	}
 
-	public void getProfilePic(AsyncHttpResponseHandler handler) {
+	public void getUserTimeline(AsyncHttpResponseHandler handler, String screenName, long user_id, long sinceId, long maxId) {
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		if (!TextUtils.isEmpty(screenName)) {
+			params.put("screen_name", screenName);
+		} else if (user_id > 0) {
+			params.put("user_id", user_id);
+		}
+		if (sinceId > 0) {
+			params.put("since_id", sinceId);
+		}
+		if (maxId > 0) {
+			params.put("max_id", maxId);
+		}
+		getClient().get(apiUrl, params, handler);
+	}
+
+	public void getProfile(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		RequestParams params = new RequestParams();
-		params.put("skip_status", 0);
+		getClient().get(apiUrl, params, handler);
+	}
+
+	public void getUserInfo(AsyncHttpResponseHandler handler, long userId, String screenName) {
+		String apiUrl = getApiUrl("users/show.json");
+		RequestParams params = new RequestParams();
+		if (userId > 0) {
+			params.put("user_id", userId);
+		} else if (!TextUtils.isEmpty(screenName)) {
+			params.put("screen_name", screenName);
+		}
 		getClient().get(apiUrl, params, handler);
 	}
 

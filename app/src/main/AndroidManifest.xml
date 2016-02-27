@@ -52,8 +52,11 @@
             android:label="@string/title_activity_timeline"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".activities.ComposeActivity"
-                  android:theme="@style/Theme.MyDialog">
+        <activity
+            android:name=".activities.ComposeActivity"
+            android:theme="@style/Theme.MyDialog">
+        </activity>
+        <activity android:name=".activities.ProfileActivity">
         </activity>
     </application>
 

@@ -30,6 +30,9 @@ public class User {
   private long uid;
   private String screenName;
   private String profileImageUrl;
+  private long followers;
+  private long friends;
+  private String tagline;
 
   public void setName(String name) {
     this.name = name;
@@ -47,6 +50,30 @@ public class User {
     this.profileImageUrl = profileImageUrl;
   }
 
+  public long getFollowers() {
+    return followers;
+  }
+
+  public void setFollowers(long followers) {
+    this.followers = followers;
+  }
+
+  public long getFriends() {
+    return friends;
+  }
+
+  public void setFriends(long friends) {
+    this.friends = friends;
+  }
+
+  public String getTagline() {
+    return tagline;
+  }
+
+  public void setTagline(String tagline) {
+    this.tagline = tagline;
+  }
+
   public static User fromJSON(JSONObject jsonObject) {
     User user = new User();
     try {
@@ -54,6 +81,9 @@ public class User {
       user.uid = jsonObject.getLong("id");
       user.screenName = jsonObject.getString("screen_name");
       user.profileImageUrl = jsonObject.getString("profile_image_url");
+      user.followers = jsonObject.getLong("followers_count");
+      user.friends = jsonObject.getLong("friends_count");
+      user.tagline = jsonObject.getString("description");
     } catch (JSONException e) {
       e.printStackTrace();
     }
