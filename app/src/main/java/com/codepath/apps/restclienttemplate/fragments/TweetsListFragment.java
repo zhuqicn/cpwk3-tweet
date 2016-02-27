@@ -18,6 +18,7 @@ import com.codepath.apps.restclienttemplate.TweetsAdapter;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -30,8 +31,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TweetsListFragment extends Fragment {
-  private TwitterClient client;
+abstract public class TweetsListFragment extends Fragment {
+  protected TwitterClient client;
   private String profileUrl;
   private long minUid;
   private long maxUid;
@@ -78,6 +79,7 @@ public class TweetsListFragment extends Fragment {
       public void onRefresh() {
         minUid = 0;
         maxUid = 0;
+        aTweets.clear();
         populateTimeline(false);
       }
     });
@@ -86,7 +88,7 @@ public class TweetsListFragment extends Fragment {
       android.R.color.holo_green_light,
       android.R.color.holo_orange_light,
       android.R.color.holo_red_light);
-    getProfileUrl();
+    //getProfileUrl();
     populateTimeline(false);
     return v;
   }
@@ -104,16 +106,8 @@ public class TweetsListFragment extends Fragment {
     });
   }
 
-
-  private void populateTimeline(boolean newPostOnly) {
-    long sinceId = 0;
-    long maxId = 0;
-    if (newPostOnly) {
-      sinceId = maxUid + 1;
-    } else {
-      maxId = minUid - 1;
-    }
-    client.getHomeTimeline(new JsonHttpResponseHandler() {
+  protected AsyncHttpResponseHandler getHandler() {
+    return new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
         ArrayList<Tweet> tweets = Tweet.fromJSONArray(response);
@@ -138,6 +132,19 @@ public class TweetsListFragment extends Fragment {
         Log.d("DEBUG FAILURE", errorResponse.toString());
         swipeContainer.setRefreshing(false);
       }
-    }, sinceId, maxId);
+    };
+  }
+
+  protected abstract void getTimeline(long sicneId, long maxId);
+
+  private void populateTimeline(boolean newPostOnly) {
+    long sinceId = 0;
+    long maxId = 0;
+    if (newPostOnly) {
+      sinceId = maxUid + 1;
+    } else {
+      maxId = minUid - 1;
+    }
+    getTimeline(sinceId, maxId);
   }
 }
