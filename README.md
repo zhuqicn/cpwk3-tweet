@@ -44,8 +44,8 @@ The following **additional** features are implemented:
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
-![walk trhoug](https://github.com/zhuqicn/cpwk3-tweet/blob/master/Tweet.gif)
-
+![walk through](https://github.com/zhuqicn/cpwk3-tweet/blob/master/Tweet.gif)
+![walk through part2](https://github.com/zhuqicn/cpwk3-tweet/blob/master/Tweet.2.gif?raw=true)
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
