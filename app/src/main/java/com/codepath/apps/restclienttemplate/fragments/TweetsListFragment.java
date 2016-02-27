@@ -1,22 +1,24 @@
 package com.codepath.apps.restclienttemplate.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.codepath.apps.restclienttemplate.DividerItemDecoration;
 import com.codepath.apps.restclienttemplate.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.restclienttemplate.ItemClickSupport;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TweetsAdapter;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
 import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.activities.ProfileActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -70,6 +72,16 @@ abstract public class TweetsListFragment extends Fragment {
       @Override
       public void onLoadMore(int page, int totalItemsCount) {
         populateTimeline(false);
+      }
+    });
+
+    ItemClickSupport.addTo(rvTweets).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+      @Override
+      public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+        long userId = tweets.get(position).getUser().getUid();
+        Intent i = new Intent(getContext(), ProfileActivity.class);
+        i.putExtra("user_id", userId);
+        startActivity(i);
       }
     });
 
@@ -129,7 +141,6 @@ abstract public class TweetsListFragment extends Fragment {
 
       @Override
       public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-        Log.d("DEBUG FAILURE", errorResponse.toString());
         swipeContainer.setRefreshing(false);
       }
     };

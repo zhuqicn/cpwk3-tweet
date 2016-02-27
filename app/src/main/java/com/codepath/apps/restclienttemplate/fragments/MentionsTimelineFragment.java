@@ -2,7 +2,6 @@ package com.codepath.apps.restclienttemplate.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 public class MentionsTimelineFragment extends TweetsListFragment {
   @Override
@@ -12,7 +11,6 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 
   @Override
   protected void getTimeline(long sinceId, long maxId) {
-    Log.d("MENTION", sinceId + "," + maxId);
     client.getMentionsTimeline(getHandler(), sinceId, maxId);
   }
 }

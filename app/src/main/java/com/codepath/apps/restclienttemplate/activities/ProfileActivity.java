@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_profile);
     ButterKnife.bind(this);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     client = TwitterApplication.getRestClient();
     userId = getIntent().getLongExtra("user_id", 0);
@@ -63,5 +65,13 @@ public class ProfileActivity extends AppCompatActivity {
         replace(R.id.flUserTimeline, userTimelineFragment).
         commit();
     }
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+      finish();
+    }
+    return true;
   }
 }
