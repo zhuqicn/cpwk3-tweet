@@ -24,13 +24,15 @@ import org.scribe.builder.api.TwitterApi;
 public class TwitterClient extends OAuthBaseClient {
 	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class;
 	public static final String REST_URL = "https://api.twitter.com/1.1";
-	// Replace with the correct key
-	public static final String REST_CONSUMER_KEY = "xxx";
-	public static final String REST_CONSUMER_SECRET = "xxx";
 	public static final String REST_CALLBACK_URL = "oauth://cptwitterapp";
 
 	public TwitterClient(Context context) {
-		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
+		super(context,
+			REST_API_CLASS,
+			REST_URL,
+			context.getString(R.string.REST_CONSUMER_KEY),
+			context.getString(R.string.REST_CONSUMER_SECRET),
+			REST_CALLBACK_URL);
 	}
 
 	// CHANGE THIS
