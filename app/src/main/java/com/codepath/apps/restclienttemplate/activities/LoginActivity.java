@@ -1,14 +1,21 @@
 package com.codepath.apps.restclienttemplate.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TwitterApplication;
 import com.codepath.apps.restclienttemplate.TwitterClient;
-import com.codepath.apps.restclienttemplate.activities.TimelineActivity;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
@@ -30,6 +37,20 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
+		// Get current user info, and store in preference.
+    TwitterClient client = TwitterApplication.getRestClient();
+    client.getProfile(new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        User user = User.fromJSON(response);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putString("screen_name", user.getScreenName());
+        edit.putLong("user_id", user.getUid());
+        edit.putString("user_profile_image_url", user.getProfileImageUrl());
+        edit.commit();
+      }
+    });
 		Intent i = new Intent(this, TimelineActivity.class);
 		startActivity(i);
 	}

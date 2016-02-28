@@ -9,20 +9,31 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TwitterApplication;
+import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
 import com.codepath.apps.restclienttemplate.fragments.MentionsTimelineFragment;
+import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import butterknife.ButterKnife;
 
 public class TimelineActivity extends AppCompatActivity {
 
   public final int REQUEST_CODE = 20;
+  private TweetsPagerAdapter pagerAdapter;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +47,14 @@ public class TimelineActivity extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        /*
-        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-        i.putExtra("prof_url", profileUrl);
-        startActivityForResult(i, REQUEST_CODE);
-        */
       }
     });
     ButterKnife.bind(this);
 
     ViewPager vpPager = (ViewPager)findViewById(R.id.viewpager);
-    vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+    pagerAdapter = new TweetsPagerAdapter(getSupportFragmentManager());
+    vpPager.setAdapter(pagerAdapter);
+
     PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);
     tabStrip.setViewPager(vpPager);
 
@@ -56,24 +64,25 @@ public class TimelineActivity extends AppCompatActivity {
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    /*
     if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
       String text = data.getStringExtra("tweet");
+      final HomeTimelineFragment homeTimelineFragment = (HomeTimelineFragment)pagerAdapter.getRegisteredFragment(0);
+      TwitterClient client = TwitterApplication.getRestClient();
       client.tweet(text, new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
           Tweet t = Tweet.fromJSON(response);
-          tweets.add(0, t);
-          aTweets.notifyItemInserted(0);
-          rvTweets.scrollToPosition(0);
+          if (homeTimelineFragment != null) {
+            homeTimelineFragment.tweeted(t);
+          }
         }
       });
     }
-    */
   }
 
   public class TweetsPagerAdapter extends FragmentPagerAdapter {
     private String tabTitles[] = { "Home", "Mentions" };
+    private SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     public TweetsPagerAdapter(FragmentManager fm) {
       super(fm);
@@ -99,6 +108,24 @@ public class TimelineActivity extends AppCompatActivity {
     public int getCount() {
       return tabTitles.length;
     }
+
+    // Following functions are used to get a specific fragment.
+    public Fragment getRegisteredFragment(int position) {
+      return registeredFragments.get(position);
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+      Fragment fragment = (Fragment) super.instantiateItem(container, position);
+      registeredFragments.put(position, fragment);
+      return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+      registeredFragments.remove(position);
+      super.destroyItem(container, position, object);
+    }
   }
 
   @Override
@@ -118,5 +145,10 @@ public class TimelineActivity extends AppCompatActivity {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_timeline, menu);
     return true;
+  }
+
+  public void onTweet(MenuItem mi) {
+    Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+    startActivityForResult(i, REQUEST_CODE);
   }
 }

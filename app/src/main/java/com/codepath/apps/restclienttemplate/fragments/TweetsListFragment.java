@@ -38,8 +38,8 @@ abstract public class TweetsListFragment extends Fragment {
   private String profileUrl;
   private long minUid;
   private long maxUid;
-  private ArrayList<Tweet> tweets;
-  private TweetsAdapter aTweets;
+  protected ArrayList<Tweet> tweets;
+  protected TweetsAdapter aTweets;
 
   @Bind(R.id.rvTweets) RecyclerView rvTweets;
   SwipeRefreshLayout swipeContainer;
