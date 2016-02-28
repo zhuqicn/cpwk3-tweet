@@ -17,8 +17,8 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.TwitterApplication;
-import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.networks.TwitterApplication;
+import com.codepath.apps.restclienttemplate.networks.TwitterClient;
 import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
 import com.codepath.apps.restclienttemplate.fragments.MentionsTimelineFragment;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -57,9 +57,6 @@ public class TimelineActivity extends AppCompatActivity {
 
     PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);
     tabStrip.setViewPager(vpPager);
-
-
-
   }
 
   @Override

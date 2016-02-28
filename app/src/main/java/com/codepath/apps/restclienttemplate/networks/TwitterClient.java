@@ -1,8 +1,9 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.networks;
 
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.codepath.apps.restclienttemplate.R;
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;

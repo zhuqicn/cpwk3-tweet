@@ -8,8 +8,8 @@ import android.view.Menu;
 import android.view.View;
 
 import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.TwitterApplication;
-import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.networks.TwitterApplication;
+import com.codepath.apps.restclienttemplate.networks.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 import com.loopj.android.http.JsonHttpResponseHandler;

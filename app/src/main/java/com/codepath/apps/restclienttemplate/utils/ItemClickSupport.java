@@ -1,7 +1,9 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.utils;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.codepath.apps.restclienttemplate.R;
 
 public class ItemClickSupport {
   private final RecyclerView mRecyclerView;
