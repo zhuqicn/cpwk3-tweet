@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -100,7 +101,6 @@ abstract public class TweetsListFragment extends Fragment {
       android.R.color.holo_green_light,
       android.R.color.holo_orange_light,
       android.R.color.holo_red_light);
-    //getProfileUrl();
     populateTimeline(false);
     return v;
   }
@@ -137,11 +137,13 @@ abstract public class TweetsListFragment extends Fragment {
         }
         aTweets.addAll(Tweet.fromJSONArray(response));
         swipeContainer.setRefreshing(false);
+        hideProgressBar();
       }
 
       @Override
       public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
         swipeContainer.setRefreshing(false);
+        hideProgressBar();
       }
     };
   }
@@ -149,6 +151,7 @@ abstract public class TweetsListFragment extends Fragment {
   protected abstract void getTimeline(long sicneId, long maxId);
 
   private void populateTimeline(boolean newPostOnly) {
+    showProgressBar();
     long sinceId = 0;
     long maxId = 0;
     if (newPostOnly) {
@@ -157,5 +160,24 @@ abstract public class TweetsListFragment extends Fragment {
       maxId = minUid - 1;
     }
     getTimeline(sinceId, maxId);
+  }
+
+  public interface iProgressBar {
+    void showProgressBar();
+    void hideProgressBar();
+  }
+
+  private void showProgressBar() {
+    FragmentActivity activity = getActivity();
+    if (activity instanceof iProgressBar) {
+      ((iProgressBar)activity).showProgressBar();
+    }
+  }
+
+  private void hideProgressBar() {
+    FragmentActivity activity = getActivity();
+    if (activity instanceof iProgressBar) {
+      ((iProgressBar)activity).hideProgressBar();
+    }
   }
 }

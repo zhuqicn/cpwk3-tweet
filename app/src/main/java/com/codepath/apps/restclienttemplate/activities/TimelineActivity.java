@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
 import com.codepath.apps.restclienttemplate.fragments.MentionsTimelineFragment;
+import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.networks.TwitterApplication;
 import com.codepath.apps.restclienttemplate.networks.TwitterClient;
@@ -27,10 +31,11 @@ import org.json.JSONObject;
 
 import butterknife.ButterKnife;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.iProgressBar {
 
   public final int REQUEST_CODE = 20;
   private TweetsPagerAdapter pagerAdapter;
+  MenuItem miActionProgressItem;
 
 
   @Override
@@ -138,5 +143,31 @@ public class TimelineActivity extends AppCompatActivity {
   public void onTweet(MenuItem mi) {
     Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
     startActivityForResult(i, REQUEST_CODE);
+  }
+
+  @Override
+  public boolean onPrepareOptionsMenu(Menu menu) {
+    Log.d("ProgressBar", "IS PREPARED");
+    miActionProgressItem = menu.findItem(R.id.miActionProgress);
+    ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+    return super.onPrepareOptionsMenu(menu);
+  }
+
+  public void showProgressBar() {
+    if (miActionProgressItem == null) {
+      Log.d("ProgressBar", "IS NULL");
+      return;
+    }
+    // Show progress item
+    miActionProgressItem.setVisible(true);
+  }
+
+  public void hideProgressBar() {
+    if (miActionProgressItem == null) {
+      Log.d("ProgressBar", "IS NULL");
+      return;
+    }
+    // Hide progress item
+    miActionProgressItem.setVisible(false);
   }
 }

@@ -3,6 +3,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/miActionProgress"
+        android:title="Loading..."
+        android:visible="false"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/action_view_progress" />
+    <item
         android:id="@+id/miWrite"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_write"
